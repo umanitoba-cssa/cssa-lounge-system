@@ -13,7 +13,8 @@
     "@tessellate-pos/common": "file:tessellate-pos-common-0.3.3-dev.tgz",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "react-router": "^7.13.1"
+    "react-router": "^7.13.1",
+    "url-parse": "^1.5.10"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
