@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.4.5",
+    "@electric-sql/pglite-react": "^0.3.5",
     "@tessellate-pos/common": "file:tessellate-pos-common-0.3.3-dev.tgz",
     "babel-plugin-react-compiler": "^1.0.0",
     "react": "^19.2.0",

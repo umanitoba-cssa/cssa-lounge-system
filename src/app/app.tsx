@@ -1,9 +1,11 @@
-import { useState } from "react";
 import logo from "/logo.svg";
 import "./app.css";
+import AcceptTab from "../components/accept-tab";
+import Management from "../components/management";
 
 function App() {
-  const [tab] = useState(20);
+  // const name = useState("CSSA");
+  const tab = 40.0;
 
   return (
     <>
@@ -13,22 +15,25 @@ function App() {
         </a>
       </div>
       <h1>Lounge Tab System</h1>
+      <h2>Confirm adding ${tab} CAD</h2>
+
       <div className="card">
         <label>
-          Amount to add: <input name="additional" type="number" />
+          Your name: <input name="name" />
         </label>
       </div>
-      <button onClick={() => setTab(tab)} className="bg-none">
-        Add to Tab
-      </button>
-      <p>You can't make purchases if your tab is greater than $50.00 CAD.</p>
-      <p className="read-the-docs">Created by Edith H.</p>
+      <button onClick={() => setTab(tab)}>Add ${tab}</button>
+      <p>
+        You can't add to your tab if it will become greater than $50.00 CAD.
+      </p>
+      <AcceptTab></AcceptTab>
+      <p className="read-the-docs">Created by Edith Hohner</p>
     </>
   );
 }
 
-function setTab(tab: number): void {
-  tab = tab + 1;
+function setTab(tab: number) {
+  return tab;
 }
 
 export default App;
