@@ -1,12 +1,9 @@
 import logo from "/logo.svg";
 import "./app.css";
-import AcceptTab from "../components/accept-tab";
-import Management from "../components/management";
+import AllTabs from "../components/all-tabs";
 
-function App() {
-  // const name = useState("CSSA");
-  const tab = 40.0;
-
+// hook onto the canteen system by getting the tab from a tabProvider
+function App({ tab }: { tab: number }) {
   return (
     <>
       <div>
@@ -16,24 +13,13 @@ function App() {
       </div>
       <h1>Lounge Tab System</h1>
       <h2>Confirm adding ${tab} CAD</h2>
-
-      <div className="card">
-        <label>
-          Your name: <input name="name" />
-        </label>
-      </div>
-      <button onClick={() => setTab(tab)}>Add ${tab}</button>
+      <AllTabs tab={tab}></AllTabs>
       <p>
         You can't add to your tab if it will become greater than $50.00 CAD.
       </p>
-      <AcceptTab></AcceptTab>
       <p className="read-the-docs">Created by Edith Hohner</p>
     </>
   );
-}
-
-function setTab(tab: number) {
-  return tab;
 }
 
 export default App;

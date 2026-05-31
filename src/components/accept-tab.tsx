@@ -1,11 +1,8 @@
 // this is where the user will login and confirm the amount to add to their tab
 import { usePGlite } from "@electric-sql/pglite-react";
-import { useState } from "react";
 
-export default function AcceptTab() {
+function AcceptTab({ name, tab }: { name: string; tab: number }) {
   const db = usePGlite();
-  const [name] = useState("CSSA"); // get this from `app.tsx`
-  const [tab] = useState(40.0);
 
   const insertItem = () => {
     db.query(
@@ -17,5 +14,7 @@ export default function AcceptTab() {
     );
   };
 
-  return <button onClick={insertItem}></button>;
+  return <button onClick={insertItem}>Confirm</button>;
 }
+
+export default AcceptTab;
