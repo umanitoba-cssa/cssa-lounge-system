@@ -4,6 +4,8 @@ import AllTabs from "../components/all-tabs";
 
 // hook onto the canteen system by getting the tab from a tabProvider
 function App({ tab }: { tab: number }) {
+  tab = 9.99; // temporary... 4 testing
+
   return (
     <>
       <div>
@@ -17,7 +19,7 @@ function App({ tab }: { tab: number }) {
       <p>
         You can't add to your tab if it will become greater than $50.00 CAD.
       </p>
-      <p className="read-the-docs">Created by Edith Hohner</p>
+      <p className="read-the-docs">Created by the CSSA.</p>
     </>
   );
 }

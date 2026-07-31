@@ -4,17 +4,25 @@ import { usePGlite } from "@electric-sql/pglite-react";
 function AcceptTab({ name, tab }: { name: string; tab: number }) {
   const db = usePGlite();
 
-  const insertItem = () => {
-    db.query(
-      `insert into tabs(name, tab)
-           values ($1, $2)
-           on conflict (username)
-           do update set tab = $2`,
-      [name, tab],
-    );
+  const insertItem = async () => {
+    if (!name.trim()) return;
+
+    console.log("inserting tab", name, tab)
+    try {
+      await db.query(
+              `insert into tabs(name, tab)
+                   values ($1, $2)
+                   on conflict (name)
+                   do update set tab = tabs.tab + $2`, // adds to existing total balance
+              [name, tab],
+            );
+    } catch (error) {
+      console.error("Failed to update tab: ", error);
+    }
+
   };
 
-  return <button onClick={insertItem}>Confirm</button>;
+  return <button onClick={insertItem} disabled={!name.trim()}>Confirm</button>;
 }
 
 export default AcceptTab;

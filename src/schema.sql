@@ -1,7 +1,8 @@
 -- the tabs :3
 create table if not exists tabs(
+    id serial primary key,
     name varchar(255) unique not null,
-    tab integer not null,
+    tab double precision not null default 0
 );
 
 -- test
