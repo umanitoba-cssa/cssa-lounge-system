@@ -1,0 +1,3 @@
+[submodule "packages/tessellate-pos-common"]
+	path = packages/tessellate-pos-common
+	url = https://github.com/tessellatepos/sdk.git

@@ -14,6 +14,10 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      "@tessellate-pos/common": path.resolve(
+        __dirname,
+        "./packages/tessellate-pos-common/src/index.ts"
+      ),
     },
   },
   optimizeDeps: {
