@@ -4,7 +4,7 @@ A React + TypeScript point-of-sale and tab tracking application built for the CS
 
 ## Prerequisites
 
-* **Node.js**: `v20.0.0` or higher
+* **Node.js**: `v22.0.0` or higher
 * **npm**: `v10.0.0` or higher
 
 ## Getting Started
