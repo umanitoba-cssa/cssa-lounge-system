@@ -23,4 +23,9 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ["@electric-sql/pglite"],
   },
+  server: {
+      proxy: {
+        "/api": "http://localhost:3001",
+      },
+    },
 });

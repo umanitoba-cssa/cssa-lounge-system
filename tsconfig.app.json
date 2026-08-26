@@ -42,6 +42,7 @@
   },
   "include": [
     "src",
-    "packages/tessellate-pos-common/src"
+    "packages/tessellate-pos-common/src",
+    "server"
   ]
 }
