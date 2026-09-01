@@ -1,19 +1,18 @@
-import "dotenv/config"; // must be the first import
+import "dotenv/config";
 import express from "express";
 import { Pool } from "pg";
 import { readFileSync } from "fs";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 
-
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const createTables = readFileSync(join(__dirname, "../schema.sql"), "utf-8");
 
 const pool = new Pool({
   user: process.env.PGUSER,
-  host: process.env.PGHOST,       // "localhost" now — DB is on this box
+  host: process.env.PGHOST,
   database: process.env.PGDATABASE,
-  password: process.env.PGPASSWORD,
+  password: String(process.env.PGPASSWORD),
   port: Number(process.env.PGPORT) || 5432,
 });
 
@@ -25,7 +24,6 @@ const MAX_TAB = 50.0;
 
 async function init() {
   await pool.query(createTables);
-  console.log("Database ready");
 }
 
 const app = express();
@@ -69,9 +67,9 @@ app.post("/api/tabs", async (req, res) => {
          on conflict (name)
          do update set tab_amount = tabs.tab_amount + $2
          returning id, name, tab_amount, tab_currency`,
-      [name, amountCents.toString()], // pg wants a string for bigint params too
+      [name, amountCents.toString()],
     );
-    res.json(result.rows[0]); // tab_amount is already a string here — safe to serialize
+    res.json(result.rows[0]);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to update tab" });
@@ -82,7 +80,6 @@ app.post("/api/tabs", async (req, res) => {
 const distPath = join(__dirname, "../dist");
 app.use(express.static(distPath));
 
-// SPA fallback: any non-/api route returns index.html so react-router can take over
 app.get(/^\/(?!api).*/, (_req, res) => {
   res.sendFile(join(distPath, "index.html"));
 });

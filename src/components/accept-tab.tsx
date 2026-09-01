@@ -15,10 +15,11 @@ function AcceptTab({
     if (!name.trim()) return;
     setError(null);
     try {
+      const amountCents = Math.round(tab * 100).toString();
       const res = await fetch("/api/tabs", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, amount: tab }),
+        body: JSON.stringify({ name, amount: amountCents }),
       });
       if (!res.ok) {
         const body = await res.json();

@@ -1,6 +1,7 @@
 import logo from "/logo.svg";
 import "./app.css";
 import AllTabs from "../components/all-tabs";
+import Management from "../components/management";
 
 function App({ tab }: { tab: number }) {
   tab = 9.99; // temporary... 4 testing
@@ -15,6 +16,7 @@ function App({ tab }: { tab: number }) {
       <h1>Lounge Tab System</h1>
       <h2>Confirm adding ${tab} CAD</h2>
       <AllTabs tab={tab} />
+      <Management/>
       <p>You can't add to your tab if it will become greater than $50.00 CAD.</p>
       <p className="read-the-docs">Created by the CSSA.</p>
     </>
