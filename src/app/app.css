@@ -6,8 +6,11 @@
 }
 
 .logo {
+    float: left;
+    display: flex
+    margin: 0;
+    padding: 0;
     height: 6em;
-    padding: 1.5em;
     will-change: filter;
     transition: filter 300ms;
 }
@@ -83,4 +86,39 @@
 
 .react-autosuggest__suggestion--highlighted {
   background-color: #ddd;
+}
+
+.accept-tab {
+    margin-top: 1rem;
+}
+
+.accept-tab__actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-top: 0.5rem;
+}
+
+.accept-tab__error {
+    color: #f87171;
+    margin-top: 0.5rem;
+}
+
+.accept-tab button {
+    transition: background-color 200ms ease, transform 100ms ease;
+}
+
+.accept-tab button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.accept-tab button:active:not(:disabled) {
+    transform: scale(0.97);
+}
+
+.accept-tab__button--success {
+    background-color: #22c55e !important;
+    color: white;
+    border-color: #16a34a !important;
 }

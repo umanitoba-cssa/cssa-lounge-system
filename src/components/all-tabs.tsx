@@ -5,7 +5,7 @@ import AcceptTab from "./accept-tab";
 interface TabRow {
   id: number;
   name: string;
-  tab_amount: string; // cents, as a string (bigint over the wire)
+  tab_amount: string; // cents, as a string (bigint over tha wire)
   tab_currency: string;
 }
 
@@ -34,19 +34,25 @@ function AllTabs({ tab }: { tab: number }) {
     setSuggestions(getSuggestions(value));
   };
 
-  const onSuggestionsClearRequested = () => setSuggestions([]);
+  const onSuggestionsClearRequested = () => {
+    setSuggestions([]);
+  };
 
   const onChange = (
     _event: React.FormEvent,
     { newValue }: { newValue: string },
-  ) => setValue(newValue);
+  ) => {
+    setValue(newValue);
+  };
 
   const inputProps = { placeholder: "Enter name...", value, onChange };
 
   const onSuggestionSelected = (
     _event: React.SyntheticEvent,
     { suggestionValue }: { suggestionValue: string },
-  ) => setValue(suggestionValue);
+  ) => {
+    setValue(suggestionValue);
+  };
 
   return (
     <div>
@@ -61,8 +67,12 @@ function AllTabs({ tab }: { tab: number }) {
         )}
         inputProps={inputProps}
       />
-      <AcceptTab name={value} tab={tab} onSuccess={fetchTabs} />
-    </div>
+      <AcceptTab
+        name={value}
+        tab={tab}
+        isNewName={!rows.some((row) => row.name.toLowerCase() === value.trim().toLowerCase())}
+        onSuccess={fetchTabs}
+      />    </div>
   );
 }
 
