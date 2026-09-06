@@ -1,6 +1,10 @@
 create table if not exists tabs (
     id serial primary key,
-    name varchar(255) unique not null,
+    name varchar(255) not null,
+    discord_id varchar(255) unique,
+    microsoft_id varchar(255) unique,
+    role varchar(20) not null default 'user'
+        check (role in ('user', 'supervisor', 'admin')),
     tab_amount bigint not null default 0, -- stored in cents
     tab_currency varchar(3) not null default 'CAD',
     created_at timestamptz not null default now(),
