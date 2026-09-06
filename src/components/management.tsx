@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { useSession } from "../useSession.ts";
+import Login from "./login.tsx";
 
 interface TabRow {
   id: number;
@@ -8,37 +10,54 @@ interface TabRow {
 }
 
 function Management() {
+  const { user, loading: sessionLoading } = useSession();
   const [rows, setRows] = useState<TabRow[]>([]);
   const [search, setSearch] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // check for management privileges
+  const canManage = user?.role === "supervisor" || user?.role === "admin";
+
+  // fetch tabs if user can manage
   const fetchTabs = async () => {
     setLoading(true);
     try {
-      const res = await fetch("/api/tabs");
+      const res = await fetch("/api/tabs", { credentials: "include" });
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        setError(body.error ?? "Failed to load tabs");
+        return;
+      }
       setRows(await res.json());
     } catch (err) {
       console.error("Failed to fetch tabs: ", err);
-      setError("Failed to load tabs");
+      setError("Network error");
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchTabs();
-  }, []);
+  // fetch tabs on mount if user can manage
+  useEffect(
+    () => {
+    if (canManage) {
+      fetchTabs();
+    } else {
+      setLoading(false);
+    }
+  }, [canManage]);
 
-  // clear tab method, will require auth eventually yeah
-  const clearTab = async (name: string) => {
+  // clear tab and refetch tabs
+  const clearTab = async (id: number) => {
     setError(null);
     try {
-      const res = await fetch(`/api/tabs/${encodeURIComponent(name)}/clear`, {
+      const res = await fetch(`/api/tabs/${id}/clear`, {
         method: "POST",
+        credentials: "include",
       });
       if (!res.ok) {
-        const body = await res.json();
+        const body = await res.json().catch(() => ({}));
         setError(body.error ?? "Failed to clear tab");
         return;
       }
@@ -55,9 +74,27 @@ function Management() {
 
   const totalOwed = rows.reduce((sum, row) => sum + Number(row.tab_amount), 0);
 
+  if (sessionLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (!user) {
+    return <Login />;
+  }
+
+  if (!canManage) {
+    return (
+      <div>
+        <button onClick={() => (window.location.href = "/")}>Back</button>
+        <p>You don't have access to this page.</p>
+      </div>
+    );
+  }
+
+  // render management interface as a table
   return (
     <div>
-      <button onClick={() => window.location.href = "/"}>Back</button>
+      <button onClick={() => (window.location.href = "/")}>Back</button>
       <h1>Tab Management</h1>
       <p>Total outstanding: ${(totalOwed / 100).toFixed(2)} CAD</p>
 
@@ -77,7 +114,6 @@ function Management() {
             <tr>
               <th>Name</th>
               <th>Balance</th>
-              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -87,7 +123,7 @@ function Management() {
                 <td>${(Number(row.tab_amount) / 100).toFixed(2)}</td>
                 <td>
                   <button
-                    onClick={() => clearTab(row.name)}
+                    onClick={() => clearTab(row.id)}
                     disabled={Number(row.tab_amount) === 0}
                   >
                     Mark Paid

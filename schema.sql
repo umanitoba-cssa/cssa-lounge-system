@@ -1,6 +1,7 @@
 create table if not exists tabs (
     id serial primary key,
     name varchar(255) not null,
+    email varchar(255) unique,
     discord_id varchar(255) unique,
     microsoft_id varchar(255) unique,
     role varchar(20) not null default 'user'

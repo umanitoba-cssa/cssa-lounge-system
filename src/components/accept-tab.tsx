@@ -1,50 +1,38 @@
 import { useState } from "react";
-/// the email field doesn't do any thing yet. figure that out
+import { useSession } from "../useSession.ts";
+import Login from "./login.tsx";
 
-function AcceptTab({
-  name,
-  tab,
-  isNewName,
-  onSuccess,
-}: {
-  name: string;
-  tab: number;
-  isNewName: boolean;
-  onSuccess: () => void;
-}) {
+function AcceptTab({ tab, onSuccess }: { tab: number; onSuccess: () => void }) {
+  const { user, loading, logout } = useSession();
   const [error, setError] = useState<string | null>(null);
   const [showConfirm, setShowConfirm] = useState(false);
-  const [email, setEmail] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  const insertItem = async (emailToSend?: string) => {
-    if (!name.trim()) return;
-
+  const insertItem = async () => {
     setError(null);
     setSubmitting(true);
 
     try {
       const amountCents = Math.round(tab * 100).toString();
+      // post to /api/tabs to create a new tab
       const res = await fetch("/api/tabs", {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name,
-          amount: amountCents,
-          ...(emailToSend?.trim() ? { email: emailToSend.trim() } : {}),
-        }),
+        body: JSON.stringify({ amount: amountCents }),
       });
+
       if (!res.ok) {
         const body = await res.json();
         setError(body.error ?? "Failed to update tab");
         return;
       }
+
       setShowConfirm(false);
-      setEmail("");
       setSuccess(true);
       onSuccess();
-      setTimeout(() => { setSuccess(false); }, 2000);
+      setTimeout(() => setSuccess(false), 2000);
     } catch (err) {
       console.error("Failed to update tab: ", err);
       setError("Network error");
@@ -53,31 +41,24 @@ function AcceptTab({
     }
   };
 
-  // wait till confirm clicked to display
-  const handleConfirmClick = () => {
-    if (isNewName) {
-      setShowConfirm(true);
-    } else {
-      insertItem();
-    }
-  };
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
+  if (!user) {
+    return <Login />;
+  }
+
+  // get auth input
   if (showConfirm) {
     return (
       <div className="accept-tab">
         <p>
-          Create a new tab for "{name}"?
+          Add ${tab.toFixed(2)} to {user.name}'s tab?
         </p>
-        <input
-          type="email"
-          placeholder="Student Email/Auth???"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          disabled={submitting}
-        />
         <div className="accept-tab__actions">
-          <button onClick={() => insertItem(email)} disabled={submitting}>
-            {submitting ? "Creating..." : "Create Tab"}
+          <button onClick={insertItem} disabled={submitting}>
+            {submitting ? "Adding..." : "Confirm"}
           </button>
           <button onClick={() => setShowConfirm(false)} disabled={submitting}>
             Cancel
@@ -88,14 +69,19 @@ function AcceptTab({
     );
   }
 
+  // tab acceptance ui
   return (
     <div className="accept-tab">
+      <p>Signed in as {user.name}</p>
       <button
-        onClick={handleConfirmClick}
-        disabled={!name.trim() || submitting}
+        onClick={() => setShowConfirm(true)}
+        disabled={submitting}
         className={success ? "accept-tab__button--success" : ""}
       >
-        {submitting ? "Adding..." : success ? "✓ Added" : "Confirm"}
+        {submitting ? "Adding..." : success ? "Added" : "Add to tab"}
+      </button>
+      <button onClick={logout} className="accept-tab__logout">
+        Sign out
       </button>
       {error && <p className="accept-tab__error">{error}</p>}
     </div>
