@@ -25,16 +25,24 @@ git submodule update --init --recursive
 
 ### 2. Install Dependencies
 
+Install Node.js packages with
+
 ```bash
 npm install
 ```
 
+Install [Docker](https://www.docker.com/) or [Docker Desktop](https://www.docker.com/products/docker-desktop/). Docker Desktop gives a full GUI and will be a bit easier to use if you aren't familiar with Docker, and is required for Windows development.
+
 ### 3. Development Server
 
-
-Start the Vite development server with local submodules linked:
+Start the Vite development server and backend with local submodules linked:
 ```bash
 npm run dev
+```
+
+Copy `.env.example` into `.env` and start the database:
+```bash
+docker compose up
 ```
 
 ## Available Scripts

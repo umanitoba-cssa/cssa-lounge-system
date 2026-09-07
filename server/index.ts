@@ -10,10 +10,10 @@ const createTables = readFileSync(join(__dirname, "../schema.sql"), "utf-8");
 
 // initiate pool w env vars
 const pool = new Pool({
-  user: process.env.PGUSER,
+  user: process.env.POSTGRES_USER,
   host: process.env.PGHOST,
-  database: process.env.PGDATABASE,
-  password: String(process.env.PGPASSWORD),
+  database: process.env.POSTGRES_DB,
+  password: String(process.env.POSTGRES_PASSWORD),
   port: Number(process.env.PGPORT) || 5432,
 });
 
