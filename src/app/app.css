@@ -7,7 +7,7 @@
 
 .logo {
     float: left;
-    display: flex
+    display: flex;
     margin: 0;
     padding: 0;
     height: 6em;
@@ -48,46 +48,6 @@
     color: "";
 }
 
-/* container holding the suggestions dropdown */
-.react-autosuggest__container {
-  position: relative;
-}
-
-.react-autosuggest__input {
-  width: 240px;
-  padding: 8px 12px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-/* make sure the suggestions menu appears below the input */
-.react-autosuggest__suggestions-container--open {
-  display: block;
-  position: absolute;
-  top: 40px;
-  width: 240px;
-  border: 1px solid #aaa;
-  background-color: #fff;
-  color: #000;
-  border-bottom-left-radius: 4px;
-  border-bottom-right-radius: 4px;
-  z-index: 2;
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-
-.react-autosuggest__suggestion {
-  cursor: pointer;
-  padding: 8px 12px;
-  text-align: left;
-}
-
-.react-autosuggest__suggestion--highlighted {
-  background-color: #ddd;
-}
-
 .accept-tab {
     margin-top: 1rem;
 }
@@ -121,4 +81,119 @@
     background-color: #22c55e !important;
     color: white;
     border-color: #16a34a !important;
+}
+
+.login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 2rem;
+}
+
+.login p {
+  margin-bottom: 8px;
+  font-size: 1rem;
+  color: white;
+}
+
+.login__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 280px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.05s ease, box-shadow 0.15s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.login__button:active {
+  transform: translateY(1px);
+}
+
+.login__button:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.25);
+}
+
+.login__button--discord {
+  background-color: #5865F2;
+}
+
+.login__button--discord:hover {
+  background-color: #4752C4;
+}
+
+.login__button--microsoft {
+  background-color: #2F2F2F;
+}
+
+.login__button--microsoft:hover {
+  background-color: #1e1e1e;
+}
+
+.pay-tab-card--success {
+  width: 100%;
+  max-width: 420px;
+  background: #535bf2;
+  border-radius: 16px;
+  padding: 40px 32px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  animation: pay-tab-fade-in 0.3s ease-out;
+}
+
+.pay-tab-card--success::before {
+  content: "✓";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  background: #e6f7ed;
+  color: #1c9a5b;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.pay-tab-card h2 {
+  margin: 0 0 12px;
+  font-size: 22px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.pay-tab-card p {
+  margin: 0 0 12px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #1a1a1a;
+}
+
+.pay-tab-card p:last-child {
+  margin-bottom: 0;
+  font-size: 13px;
+  color: #1a1a1a;
+}
+
+@keyframes pay-tab-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
