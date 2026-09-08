@@ -28,13 +28,32 @@ function PayTab({ onSuccess }: { onSuccess: () => void }) {
     setShowConfirm(true);
   };
 
+  // clear tab
+  const clearTab = async (id: number) => {
+    setError(null);
+    try {
+      const res = await fetch(`/api/tabs/${id}/clear`, {
+        method: "POST",
+        credentials: "include",
+      });
+      if (!res.ok) {
+        const body = (await res.json().catch(() => ({}))) as { error?: string };
+        setError(body.error ?? "Failed to clear tab");
+        return;
+      }
+    } catch (err) {
+      console.error("Failed to clear tab: ", err);
+      setError("Network error");
+    }
+  };
+
   // issue #20, how are we handling in person?
   // regardless, simulate a successful payment
   const handleInPerson = async () => {
     setSubmittingInPerson(true);
     setError(null);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 600));
+      await clearTab(user.id);
       setSuccess(true);
       setShowConfirm(false);
       onSuccess();
@@ -53,7 +72,7 @@ function PayTab({ onSuccess }: { onSuccess: () => void }) {
     setSubmittingTransfer(true);
     setError(null);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 600));
+      await clearTab(user.id);
       setSuccess(true);
       setShowConfirm(false);
       onSuccess();
