@@ -1,8 +1,8 @@
-// basic ugly nasty login interface
+// used in tab-accept.tsx and tab-pay.tsx
 function Login() {
   return (
     <div className="login">
-      <p>Sign in to add to your tab</p>
+      <p>Sign in to manage your tab.</p>
       <a className="login__button login__button--discord" href="/api/auth/discord">
         Sign in with Discord
       </a>

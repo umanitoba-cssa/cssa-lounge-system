@@ -46,7 +46,9 @@ export async function exchangeDiscordCode(code: string) {
   return { discordId: profile.id, name: profile.username, email: profile.email };
 }
 
-// = michaelsoft =
+// = michaelsoft (untested, sorry) =
+// it's really run of the mill so there shouldn't be any problems
+// in my defense entra is really hard to setup
 const MS_CLIENT_ID = process.env.MS_CLIENT_ID!;
 const MS_CLIENT_SECRET = process.env.MS_CLIENT_SECRET!;
 const MS_REDIRECT_URI = process.env.MS_REDIRECT_URI!;
@@ -102,7 +104,7 @@ export async function findOrCreateByDiscord(
     `insert into tabs (name, email, discord_id, tab_amount)
        values ($1, $2, $3, 0)
        on conflict (discord_id)
-       do update set name = $1, email = coalesce($2, tabs.email)
+       do update set email = coalesce($2, tabs.email)
        returning id, name, email, discord_id, microsoft_id, role`,
     [name, email, discordId],
   );

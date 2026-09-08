@@ -18,12 +18,17 @@ export function useSession() {
 
   // fetch user session on mount
   useEffect(() => {
-    fetch("/api/auth/me", { credentials: "include" })
-      .then((res) => (res.ok ? res.json() : null))
-      .then(setUser)
-      .finally(() => setLoading(false));
-  }, []);
+    const fetchSession = async () => {
+      try {
+        const res = await fetch("/api/auth/me", { credentials: "include" });
+        setUser(res.ok ? await res.json() : null);
+      } finally {
+        setLoading(false);
+      }
+    };
 
+    void fetchSession();
+  }, []);
   const logout = async () => {
     await fetch("/api/auth/logout", { method: "POST", credentials: "include" });
     setUser(null);

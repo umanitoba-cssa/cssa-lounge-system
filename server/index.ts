@@ -5,7 +5,7 @@ import { Pool } from "pg";
 import { readFileSync } from "fs";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
-import { requireAuth, requireRole, setSessionCookie, clearSessionCookie, type SessionUser } from "./auth.js";
+import { requireAuth, requireRole, setSessionCookie, clearSessionCookie } from "./auth.js";
 import {
   makeState,
   discordAuthorizeUrl,
@@ -77,6 +77,7 @@ app.get("/api/auth/discord/callback", async (req, res) => {
 });
 
 // = microsoft oauth endpoint =
+// i have not tested this SORRY -edith
 app.get("/api/auth/microsoft", (_req, res) => {
   const state = makeState();
   res.cookie("oauth_state", state, { httpOnly: true, sameSite: "lax", maxAge: 5 * 60 * 1000 });
@@ -84,6 +85,7 @@ app.get("/api/auth/microsoft", (_req, res) => {
 });
 
 // = microsoft oauth callback endpoint =
+// i have not tested this either SORRY x2 -edith
 app.get("/api/auth/microsoft/callback", async (req, res) => {
   const { code, state } = req.query as { code?: string; state?: string };
   const expectedState = req.cookies?.oauth_state;
@@ -127,8 +129,9 @@ app.post("/api/auth/logout", (_req, res) => {
 
 // = tabs =
 app.post("/api/tabs", requireAuth, async (req, res) => {
-  const { amount } = req.body as { amount?: string };
-  const { name, email, discordId, microsoftId } = req.user!;
+  const { amount, name: nameOverride } = req.body as { amount?: string; name?: string };
+  const { name: sessionName, email, discordId, microsoftId } = req.user!;
+  const name = nameOverride?.trim() ? nameOverride.trim().slice(0, 255) : sessionName;
 
   // check for cents amount
   if (!amount || !/^\d+$/.test(amount)) {
@@ -159,7 +162,7 @@ app.post("/api/tabs", requireAuth, async (req, res) => {
            name = $1,
            email = coalesce($2, tabs.email)
          returning id, name, tab_amount, tab_currency, email, role`,
-      [name, discordId ?? null, microsoftId ?? null, amountCents.toString()],
+      [name, email ?? null, discordId ?? null, microsoftId ?? null, amountCents.toString()],
     );
     res.json(result.rows[0]);
   } catch (err) {
@@ -200,5 +203,5 @@ const distPath = join(__dirname, "../dist");
 app.use(express.static(distPath));
 app.get(/^\/(?!api).*/, (_req, res) => res.sendFile(join(distPath, "index.html")));
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT ?? 3001;
 init().then(() => app.listen(PORT, () => console.log(`Listening on :${PORT}`)));

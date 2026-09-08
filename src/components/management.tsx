@@ -25,11 +25,11 @@ function Management() {
     try {
       const res = await fetch("/api/tabs", { credentials: "include" });
       if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
-        setError(body.error ?? "Failed to load tabs");
+        const body = (await res.json().catch(() => ({}))) as { error?: string };
+        setError(body.error ?? "Failed to clear tab");
         return;
       }
-      setRows(await res.json());
+      setRows(await res.json() as TabRow[]);
     } catch (err) {
       console.error("Failed to fetch tabs: ", err);
       setError("Network error");
@@ -57,7 +57,7 @@ function Management() {
         credentials: "include",
       });
       if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
+        const body = (await res.json().catch(() => ({}))) as { error?: string };
         setError(body.error ?? "Failed to clear tab");
         return;
       }
