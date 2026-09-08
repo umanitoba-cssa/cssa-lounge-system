@@ -1,86 +1,89 @@
 #root {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 2rem;
-    text-align: center;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
 }
 
 .logo {
-    float: left;
-    display: flex;
-    margin: 0;
-    padding: 0;
-    height: 6em;
-    will-change: filter;
-    transition: filter 300ms;
+  float: left;
+  display: flex;
+  margin: 0;
+  padding: 0;
+  height: 6em;
+  will-change: filter;
+  transition: filter 300ms;
 }
+
 .logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
+  filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
-    filter: drop-shadow(0 0 2em #61dafbaa);
+  filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
 @keyframes logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @media (prefers-reduced-motion: no-preference) {
-    a:nth-of-type(2) .logo {
-        animation: logo-spin infinite 20s linear;
-    }
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
 }
 
 .card {
-    padding: 2em;
+  padding: 2em;
 }
 
 .read-the-docs {
-    color: #888;
+  color: #888;
 }
 
 .cssa-navy {
-    color: "";
+  color: "";
 }
 
 .accept-tab {
-    margin-top: 1rem;
+  margin-top: 1rem;
 }
 
 .accept-tab__actions {
-    display: flex;
-    gap: 0.5rem;
-    justify-content: center;
-    margin-top: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 0.5rem;
 }
 
 .accept-tab__error {
-    color: #f87171;
-    margin-top: 0.5rem;
+  color: #f87171;
+  margin-top: 0.5rem;
 }
 
 .accept-tab button {
-    transition: background-color 200ms ease, transform 100ms ease;
+  transition: background-color 200ms ease, transform 100ms ease;
 }
 
 .accept-tab button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .accept-tab button:active:not(:disabled) {
-    transform: scale(0.97);
+  transform: scale(0.97);
 }
 
 .accept-tab__button--success {
-    background-color: #22c55e !important;
-    color: white;
-    border-color: #16a34a !important;
+  background-color: #22c55e !important;
+  color: white;
+  border-color: #16a34a !important;
 }
 
 .login {
@@ -171,14 +174,14 @@
   margin: 0 0 12px;
   font-size: 22px;
   font-weight: 600;
-  color: #1a1a1a;
+  /* color: #1a1a1a; */
 }
 
 .pay-tab-card p {
   margin: 0 0 12px;
   font-size: 15px;
   line-height: 1.5;
-  color: #1a1a1a;
+  /* color: #1a1a1a; */
 }
 
 .pay-tab-card p:last-child {
@@ -192,6 +195,7 @@
     opacity: 0;
     transform: translateY(8px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
