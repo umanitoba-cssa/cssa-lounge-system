@@ -50,17 +50,24 @@ app.get("/api/auth/discord", (_req, res) => {
 
 // = discord oauth callback endpoint =
 app.get("/api/auth/discord/callback", async (req, res) => {
-    const { code, state } = req.query as { code?: string; state?: string };
+    const { code, state } = req.query as {
+        code?: string;
+        state?: string;
+    };
+
     const expectedState = req.cookies?.oauth_state;
     res.clearCookie("oauth_state");
 
     if (!code || !state || state !== expectedState) {
-        return res.status(400).send("Invalid OAuth state");
+        return res.redirect(
+            `${FRONTEND_URL}?error=invalid_oauth_state`
+        );
     }
 
     try {
         const profile = await exchangeDiscordCode(code);
         const row = await findOrCreateByDiscord(pool, profile);
+
         setSessionCookie(res, {
             id: row.id,
             name: row.name,
@@ -69,10 +76,20 @@ app.get("/api/auth/discord/callback", async (req, res) => {
             microsoftId: row.microsoft_id,
             role: row.role,
         });
+
         res.redirect(FRONTEND_URL);
     } catch (err) {
         console.error(err);
-        res.status(500).send("Discord sign-in failed"); // Need to make the HTML look better than this.
+
+        if (err instanceof Error && err.message === "DISCORD_NOT_VERIFIED") {
+            return res.redirect(
+                `${FRONTEND_URL}?error=discord_not_verified`
+            );
+        }
+
+        return res.redirect(
+            `${FRONTEND_URL}?error=discord_sign_in_failed`
+        );
     }
 });
 

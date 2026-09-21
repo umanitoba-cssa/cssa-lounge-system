@@ -67,7 +67,7 @@ export async function exchangeDiscordCode(code: string) {
   const verified = await isDiscordUserVerified(profile.id);
 
   if (!verified) {
-      throw new Error("Discord user is not verified on the server.");
+      throw new Error("DISCORD_NOT_VERIFIED");
   }
 
   return { discordId: profile.id, name: profile.username, email: profile.email };
