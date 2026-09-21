@@ -72,7 +72,7 @@ app.get("/api/auth/discord/callback", async (req, res) => {
     res.redirect(FRONTEND_URL);
   } catch (err) {
     console.error(err);
-    res.status(500).send("Discord sign-in failed");
+    res.status(500).send("Discord sign-in failed"); // Need to make the HTML look better than this.
   }
 });
 
