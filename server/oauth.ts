@@ -10,6 +10,27 @@ export function makeState(): string {
 const DISCORD_CLIENT_ID = process.env.DISCORD_CLIENT_ID!;
 const DISCORD_CLIENT_SECRET = process.env.DISCORD_CLIENT_SECRET!;
 const DISCORD_REDIRECT_URI = process.env.DISCORD_REDIRECT_URI!;
+const WEB_API_KEY = process.env.WEB_API_KEY!;
+const DISCORD_BOT_URL = process.env.HONKBOT_API_URL!;
+
+export async function isDiscordUserVerified(discordId: string): Promise<boolean> {
+  const response = await fetch(
+    `${DISCORD_BOT_URL}/api/is_user_verified/${encodeURIComponent(discordId)}`,
+    {
+      headers: {
+        Authorization: `Bearer ${WEB_API_KEY}`,
+      },
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error(
+      `HonkBot verification failed: ${response.status} ${await response.text()}`
+    );
+  }
+
+  return await response.json();
+}
 
 export function discordAuthorizeUrl(state: string): string {
   const params = new URLSearchParams({
@@ -42,6 +63,12 @@ export async function exchangeDiscordCode(code: string) {
   });
   if (!userRes.ok) throw new Error(`Discord user fetch failed: ${await userRes.text()}`);
   const profile = (await userRes.json()) as { id: string; username: string; email: string | null };
+
+  const verified = await isDiscordUserVerified(profile.id);
+
+  if (!verified) {
+      throw new Error("DISCORD_NOT_VERIFIED");
+  }
 
   return { discordId: profile.id, name: profile.username, email: profile.email };
 }
