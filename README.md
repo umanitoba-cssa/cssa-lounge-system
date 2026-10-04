@@ -35,12 +35,24 @@ Install [Docker](https://www.docker.com/) or [Docker Desktop](https://www.docker
 
 ### 3. Development Server
 
-Start the Vite development server and backend with local submodules linked:
+Build the plugin and start the local Tessellate storefront, backend, and database:
+
 ```bash
 npm run dev
 ```
 
-Copy `.env.example` into `.env` and start the database:
+The development command runs Docker Compose through WSL, so WSL and Docker must be installed and Docker must be available inside the WSL distribution. The storefront is available at [http://localhost:5173](http://localhost:5173). The plugin is loaded by the storefront; it is not served as a standalone Vite page. Plugin client changes require another `npm run build` and a browser refresh.
+
+To stop the stack, press `Ctrl+C`. To remove the containers afterward, run:
+
+```bash
+docker compose down
+```
+
+For local configuration of the separate Express API service, copy `.env.example` into `.env`. That service is not part of the Tessellate plugin development stack.
+
+To start the Tessellate stack without rebuilding:
+
 ```bash
 docker compose up
 ```
@@ -48,8 +60,7 @@ docker compose up
 ## Available Scripts
 
 
-* `npm run dev` - Start local development server with Vite
+* `npm run dev` - Build the plugin and start the local Tessellate stack
 * `npm run build` - Compile TypeScript types and build production assets
 * `npm run preview` - Preview the production build locally
 * `npm run lint` - Run ESLint across application source files
-

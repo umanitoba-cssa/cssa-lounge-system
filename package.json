@@ -1,18 +1,28 @@
 {
-  "name": "tessellate-plugin-example",
+  "name": "tab-sys",
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "main": "dist/index.js",
   "scripts": {
     "dev:client": "vite",
     "dev:server": "tsx watch server/index.ts",
-    "dev": "concurrently \"npm:dev:client\" \"npm:dev:server\"",
+    "dev": "vite build --watch",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
+  "engines": {
+    "tessellate": "0.1.0-alpha"
+  },
+  "tessellate": {
+    "permissions": [
+        "CART"
+    ]
+  },
   "dependencies": {
-    "@tessellate-pos/common": "file:./packages/tessellate-pos-common",
+    "@tessellatepos/plugin-sdk": "0.0.2-alpha",
+    "@tessellatepos/sdk": "0.0.1-alpha",
     "babel-plugin-react-compiler": "^1.0.0",
     "cookie-parser": "^1.4.7",
     "dotenv": "^17.4.2",

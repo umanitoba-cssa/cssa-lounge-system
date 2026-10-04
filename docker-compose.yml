@@ -1,9 +1,98 @@
+# Runs the full Tessellate stack with this plugin installed, for plugin
+# development. Build the plugin on the host first, then start the stack:
+#
+#   pnpm build              # compiles index.ts and src/client.tsx into dist/
+#   docker compose up
+#
+# The backend and frontend are the published images on ghcr.io; redis and
+# postgres are the stock images.
+#
+# Storefront: http://localhost:5173   Backend: http://localhost:3000
+#
+# Uses the cash-only `local` provider, so no Square account is needed.
+# The secrets below are throwaway development defaults; don't deploy this.
+name: tessellate-plugin-dev
+
 services:
-  db:
-    image: postgres:16-alpine
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-    ports:
-      - "${PGPORT}:5432"
+    redis:
+        image: redis:8.10.2-alpine
+        volumes:
+            - redis-data:/data
+        healthcheck:
+            test: ["CMD", "redis-cli", "ping"]
+            interval: 5s
+            timeout: 3s
+            retries: 10
+        ports:
+            # For host access while developing (redis-cli, psql, GUI clients)
+            - "127.0.0.1:6379:6379"
+
+    postgres:
+        image: postgres:15
+        environment:
+            POSTGRES_USER: tessellate_user
+            POSTGRES_PASSWORD: tessellate_pass
+            POSTGRES_DB: tessellate_db
+        volumes:
+            - postgres-data:/var/lib/postgresql/data
+            # CSVs for `pnpm import:test-data`
+            - ./test-data:/test-data:ro
+        healthcheck:
+            test:
+                ["CMD-SHELL", "pg_isready -U tessellate_user -d tessellate_db"]
+            interval: 5s
+            timeout: 5s
+            retries: 10
+        ports:
+            # For host access while developing (psql, GUI clients)
+            - "127.0.0.1:5432:5432"
+
+    backend:
+        image: ghcr.io/tessellatepos/backend:0.1.0-alpha
+        depends_on:
+            redis:
+                condition: service_healthy
+            postgres:
+                condition: service_healthy
+        environment:
+            PORT: 3000
+            PROVIDER: local
+            REDIS_URL: redis://redis:6379
+            DATABASE_URL: postgres://tessellate_user:tessellate_pass@postgres:5432/tessellate_db
+            FRONTEND_URL: http://localhost:5173
+            BETTER_AUTH_URL: http://localhost:3000
+            BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:-dev-only-better-auth-secret-change-me}
+            # 32 bytes, base64. Only used to encrypt provider tokens at rest.
+            TOKEN_ENCRYPTION_KEY: ${TOKEN_ENCRYPTION_KEY:-ZGV2LW9ubHktdG9rZW4tZW5jcnlwdGlvbi1rZXkhISE=}
+        # The plugin is mounted from this directory rather than baked into the
+        # image. Only the manifest and the compiled output are mounted: the
+        # backend loads dist/index.js and serves dist/client.js. The
+        # plugin's own node_modules stays out, so its imports resolve
+        # against the backend's copy of the SDK.
+        #   Client changes: rebuild, then refresh the browser.
+        #   Server changes: rebuild, then `docker compose restart backend`.
+        volumes:
+            - type: bind
+              source: ./package.json
+              target: /app/plugins/tab-sys/package.json
+              read_only: true
+            - type: bind
+              source: ./dist
+              target: /app/plugins/tab-sys/dist
+              read_only: true
+        ports:
+            # The storefront calls the backend directly on <host>:3000.
+            - "3000:3000"
+
+    frontend:
+        image: ghcr.io/tessellatepos/frontend:0.1.0-alpha
+        depends_on:
+            - backend
+        environment:
+            BACKEND_URL: http://backend:3000
+        ports:
+            - "5173:80"
+
+volumes:
+    redis-data:
+    postgres-data:
