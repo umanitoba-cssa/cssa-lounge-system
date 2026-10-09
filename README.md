@@ -11,16 +11,10 @@ A React + TypeScript point-of-sale and tab tracking application built for the CS
 
 ### 1. Clone the Repository
 
-Clone the project along with its Git submodules:
+Clone the project:
 ```bash
-git clone --recursive https://github.com/umanitoba-cssa/cssa-lounge-system
+git clone https://github.com/umanitoba-cssa/cssa-lounge-system
 cd cssa-lounge-system
-```
-
-**Note:** If you already cloned without `--recursive`, initialize the submodule manually:
-
-```bash
-git submodule update --init --recursive
 ```
 
 ### 2. Install Dependencies
