@@ -17,12 +17,6 @@
     "paths": {
       "@/*": [
         "./src/*"
-      ],
-      "@tessellate-pos/common": [
-        "./packages/tessellate-pos-common/src/index.ts"
-      ],
-      "@tessellate-pos/common/*": [
-        "./packages/tessellate-pos-common/src/*"
       ]
     },
     /* Bundler mode */
