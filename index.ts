@@ -32,7 +32,14 @@ export default function register(plugin: ServerPlugin): void {
         handler: async (req, ctx) => {
             const tab = ctx.db.table("tabs");
 
-            const entry = (await tab.insert({ balance_cents: 100 })) as TabEntry;
+            const new_entry = {
+                name: "Test McTesterson",
+                email: "test@test.com",
+                created_at: new Date(),
+                updated_at: new Date()
+            } as TabEntry;
+
+            const entry = (await tab.insert(new_entry)) as TabEntry;
 
             return {
                 status: 201,
