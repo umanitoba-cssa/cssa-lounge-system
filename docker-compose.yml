@@ -48,7 +48,7 @@ services:
             - "127.0.0.1:5432:5432"
 
     backend:
-        image: ghcr.io/tessellatepos/backend:0.1.0-alpha
+        image: ghcr.io/tessellatepos/backend:0.0.2-alpha
         depends_on:
             redis:
                 condition: service_healthy
@@ -85,7 +85,7 @@ services:
             - "3000:3000"
 
     frontend:
-        image: ghcr.io/tessellatepos/frontend:0.1.0-alpha
+        image: ghcr.io/tessellatepos/frontend:0.0.2-alpha
         depends_on:
             - backend
         environment:
