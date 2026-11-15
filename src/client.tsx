@@ -3,6 +3,7 @@ import {
     type FrontendPlugin,
 } from "@tessellatepos/plugin-sdk";
 import Login from "./components/login";
+import TabPage from "./components/tab-view";
 
 /**
  * Client entry. The frontend's PluginLoader import()s the built bundle
@@ -15,5 +16,9 @@ export default function register(plugin: FrontendPlugin) {
     plugin.register("ui", {
         mount: PluginUIMountPoint.CART_SIDEBAR,
         component: Login,
+    });
+    plugin.register("ui", {
+        mount: PluginUIMountPoint.PAGE,
+        component: TabPage,
     });
 }
