@@ -1,0 +1,8 @@
+id,name,email,discord_id,microsoft_id,tab_amount,created_at,updated_at
+1,Test McTesterson,test@test.com,100000000000000001,,1500,2026-10-01 12:00:00 +00:00,2026-10-01 12:00:00 +00:00
+2,Alice Smith,smitha@myumanitoba.ca,234567890123456789,smitha@myumanitoba.ca,450,2026-10-05 14:15:00 +00:00,2026-10-10 16:20:00 +00:00
+3,Bob Jones,jonesb@myumanitoba.ca,,jonesb@myumanitoba.ca,375,2026-10-08 09:30:00 +00:00,2026-10-12 11:45:00 +00:00
+4,Charlie Brown,brownc@myumanitoba.ca,345678901234567890,,325,2026-10-12 18:00:00 +00:00,2026-10-13 18:30:00 +00:00
+5,Diana Prince,princed@myumanitoba.ca,456789012345678901,princed@myumanitoba.ca,2450,2026-10-14 10:00:00 +00:00,2026-10-18 15:00:00 +00:00
+6,Evan Wright,wrighte@myumanitoba.ca,,,0,2026-10-20 11:00:00 +00:00,2026-10-20 11:00:00 +00:00
+7,Fiona Gallagher,gallagf@myumanitoba.ca,567890123456789012,,5000,2026-10-22 13:20:00 +00:00,2026-10-25 17:40:00 +00:00
