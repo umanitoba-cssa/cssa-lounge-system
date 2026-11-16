@@ -9,6 +9,7 @@
     "dev:server": "tsx watch server/index.ts",
     "dev": "vite build --watch",
     "build": "tsc -b && vite build",
+    "import:test-data": "docker compose up -d postgres && docker compose exec -T postgres psql -v ON_ERROR_STOP=1 -U tessellate_user -d tessellate_db -f /test-data/import.sql && docker compose restart backend",
     "lint": "eslint .",
     "preview": "vite preview"
   },

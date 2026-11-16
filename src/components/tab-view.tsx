@@ -1,5 +1,5 @@
 import type { TabArrResponse } from "@/db/mountDB";
-import { usePluginApi } from "@/hooks/usePluginApi";
+import { usePluginApi } from "@/hooks/usePluginAPI";
 import { type PluginContext } from "@tessellatepos/plugin-sdk";
 import { convertCentsToDollars } from "@tessellatepos/sdk";
 
