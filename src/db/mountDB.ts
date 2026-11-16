@@ -12,6 +12,15 @@ export type TabEntry = {
   updated_at: Date;
 };
 
+// Types for API responses containing these items, there might be a better places for these to be stored.
+export interface TabArrResponse {
+  entries: TabEntry[];
+}
+
+export interface TabResponse {
+  entry: TabEntry;
+}
+
 const mountDB = (plugin: ServerPlugin) => {
   plugin.register("database", {
     tables: [
