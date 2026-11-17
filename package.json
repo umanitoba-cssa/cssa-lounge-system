@@ -22,8 +22,8 @@
     ]
   },
   "dependencies": {
-    "@tessellatepos/plugin-sdk": "0.0.2-alpha",
-    "@tessellatepos/sdk": "0.0.1-alpha",
+    "@tessellatepos/plugin-sdk": "0.0.2-alpha2",
+    "@tessellatepos/sdk": "0.0.2-alpha",
     "babel-plugin-react-compiler": "^1.0.0",
     "cookie-parser": "^1.4.7",
     "dotenv": "^17.4.2",
