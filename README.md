@@ -57,6 +57,14 @@ To stop the stack, press `Ctrl+C` if your terminal is attached. Otherwise run:
 docker compose down
 ```
 
+### 5. Import test data (optional)
+
+Once the Tessellate stack is running, you can populate the catalog, device config, and user tabs with sample data from `test-data/`:
+
+```bash
+npm run import:test-data
+```
+
 ## Development workflow
 
 After changing plugin client code, rebuild and refresh the browser:
@@ -83,6 +91,7 @@ cp .env.example .env
 | `npm run dev`         | Rebuild the plugin on file changes               |
 | `npm run dev:client`  | Run the legacy standalone Vite site (to be removed) |
 | `npm run dev:server`  | Run the Express API with auto-reload             |
+| `npm run import:test-data` | Import sample catalog, devices, and user tabs into Postgres |
 | `npm run lint`        | Run ESLint across the project                    |
 | `npm run preview`     | Preview the production build (to be removed)     |
 
